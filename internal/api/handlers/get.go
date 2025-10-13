@@ -28,4 +28,20 @@ func (h *Handler) GoToShortUrl(c *ginext.Context) {
 }
 
 func (h *Handler) GetAnalytics(c *ginext.Context) {
+	shortURL := c.Param("short_url")
+
+	if shortURL == "" {
+		zlog.Logger.Error().Msg("empty short url")
+		Fail(c.Writer, http.StatusBadRequest, fmt.Errorf("empty short url"))
+		return
+	}
+
+	analytics, err := h.service.GetAnalytics(c.Request.Context(), shortURL)
+	if err != nil {
+		zlog.Logger.Error().Err(err).Msg("failed to get analytics")
+		Fail(c.Writer, http.StatusInternalServerError, fmt.Errorf("internal server error"))
+		return
+	}
+
+	OK(c.Writer, analytics)
 }
