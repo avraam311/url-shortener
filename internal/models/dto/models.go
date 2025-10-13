@@ -1,5 +1,5 @@
 package dto
 
-type Request struct {
-	FullURL string `json:"full_url" validate:"required"`
+type FullURL struct {
+	URL string `json:"url" validate:"required"`
 }

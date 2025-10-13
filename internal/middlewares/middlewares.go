@@ -11,7 +11,7 @@ import (
 	"github.com/wb-go/wbf/zlog"
 )
 
-type RepositoryAnalytics interface {
+type ServiceAnalytics interface {
 	SaveAnalytics(context.Context, *db.Analytics) error
 }
 
@@ -31,7 +31,7 @@ func CORSMiddleware() ginext.HandlerFunc {
 	}
 }
 
-func AnalyticsMiddleware(repoAnalytics RepositoryAnalytics) ginext.HandlerFunc {
+func AnalyticsMiddleware(repoAnalytics ServiceAnalytics) ginext.HandlerFunc {
 	return func(c *ginext.Context) {
 		shortURL := c.Param("short_url")
 		ip := c.ClientIP()

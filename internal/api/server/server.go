@@ -6,16 +6,17 @@ import (
 
 	"github.com/wb-go/wbf/ginext"
 
-	"github.com/avraam311/url-shortener/internal/api/handlers"
+	"github.com/avraam311/url-shortener/internal/api/handlers/analytics"
+	"github.com/avraam311/url-shortener/internal/api/handlers/url"
 	"github.com/avraam311/url-shortener/internal/middlewares"
 	"github.com/avraam311/url-shortener/internal/models/db"
 )
 
-type RepositoryAnalytics interface {
+type ServiceAnalytics interface {
 	SaveAnalytics(context.Context, *db.Analytics) error
 }
 
-func NewRouter(handler *handlers.Handler, ginMode string, repoAnalytics RepositoryAnalytics) *ginext.Engine {
+func NewRouter(handlerURL *url.HandlerURL, handlerAnalytics *analytics.HandlerAnalytics, serviceAnalytics ServiceAnalytics, ginMode string) *ginext.Engine {
 	e := ginext.New(ginMode)
 
 	e.Use(middlewares.CORSMiddleware())
@@ -24,9 +25,9 @@ func NewRouter(handler *handlers.Handler, ginMode string, repoAnalytics Reposito
 
 	api := e.Group("/api/url-shortener")
 	{
-		api.POST("/shorten", handler.CreateShortUrl)
-		api.GET("/", middlewares.AnalyticsMiddleware(repoAnalytics), handler.GoToShortUrl)
-		api.GET("/analytics/:short_url", handler.GetAnalytics)
+		api.POST("/shorten", handlerURL.CreateShortURL)
+		api.GET("/", middlewares.AnalyticsMiddleware(serviceAnalytics), handlerURL.GoToShortUrl)
+		api.GET("/analytics/:short_url", handlerAnalytics.GetAnalytics)
 	}
 
 	return e
