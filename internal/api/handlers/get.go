@@ -26,3 +26,6 @@ func (h *Handler) GoToShortUrl(c *ginext.Context) {
 
 	c.Redirect(http.StatusFound, fullURL)
 }
+
+func (h *Handler) GetAnalytics(c *ginext.Context) {
+}

@@ -1,10 +1,19 @@
 package middlewares
 
 import (
+	"context"
 	"net/http"
+	"time"
+
+	"github.com/avraam311/url-shortener/internal/models/db"
 
 	"github.com/wb-go/wbf/ginext"
+	"github.com/wb-go/wbf/zlog"
 )
+
+type RepositoryAnalytics interface {
+	SaveAnalytics(context.Context, *db.Analytics) error
+}
 
 func CORSMiddleware() ginext.HandlerFunc {
 	return func(c *ginext.Context) {
@@ -19,5 +28,27 @@ func CORSMiddleware() ginext.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func AnalyticsMiddleware(repoAnalytics RepositoryAnalytics) ginext.HandlerFunc {
+	return func(c *ginext.Context) {
+		shortURL := c.Param("short_url")
+		ip := c.ClientIP()
+		userAgent := c.GetHeader("User-Agent")
+		time := time.Now()
+
+		c.Next()
+
+		analytics := db.Analytics{
+			ShortURL:  shortURL,
+			Ip:        ip,
+			UserAgent: userAgent,
+			Time:      time,
+		}
+		if err := repoAnalytics.SaveAnalytics(c.Request.Context(), &analytics); err != nil {
+			zlog.Logger.Warn().Err(err).Msg("failed to save analytics")
+			return
+		}
 	}
 }
