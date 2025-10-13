@@ -11,7 +11,8 @@ import (
 )
 
 type Service interface {
-	createShortUrl(context.Context, *domain.Url) (string, error)
+	CreateShortUrl(context.Context, *domain.Url) (string, error)
+	GetFullURL(context.Context, string) (string, error)
 }
 
 type Handler struct {
@@ -25,7 +26,5 @@ func NewHandler(service Service, validator *validator.Validate) *Handler {
 		validator: validator,
 	}
 }
-
-func (h *Handler) GoToUrl(c *ginext.Context) {}
 
 func (h *Handler) GetAnalytics(c *ginext.Context) {}

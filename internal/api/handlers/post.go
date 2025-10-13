@@ -26,12 +26,12 @@ func (h *Handler) CreateShortUrl(c *ginext.Context) {
 		return
 	}
 
-	short_url, err := h.service.createShortUrl(c.Request.Context(), url)
+	shortURL, err := h.service.CreateShortUrl(c.Request.Context(), url)
 	if err != nil {
 		zlog.Logger.Error().Err(err).Interface("message", url.Url).Msg("failed to create short url")
 		Fail(c.Writer, http.StatusInternalServerError, fmt.Errorf("internal server error"))
 		return
 	}
 
-	Created(c.Writer, short_url)
+	Created(c.Writer, shortURL)
 }

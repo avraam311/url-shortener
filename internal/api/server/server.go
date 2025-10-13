@@ -19,7 +19,7 @@ func NewRouter(handler *handlers.Handler, ginMode string) *ginext.Engine {
 	api := e.Group("/api/url-shortener")
 	{
 		api.POST("/shorten", handler.CreateShortUrl)
-		api.GET("/", handler.GoToUrl)
+		api.GET("/", handler.GoToShortUrl)
 		api.GET("/analytics/:short_url", handler.GetAnalytics)
 	}
 
