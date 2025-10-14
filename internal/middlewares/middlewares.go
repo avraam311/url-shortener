@@ -5,14 +5,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/avraam311/url-shortener/internal/models/db"
+	"github.com/avraam311/url-shortener/internal/models/dto"
 
 	"github.com/wb-go/wbf/ginext"
 	"github.com/wb-go/wbf/zlog"
 )
 
 type ServiceAnalytics interface {
-	SaveAnalytics(context.Context, *db.Analytics) error
+	SaveAnalytics(context.Context, *dto.Analytics) error
 }
 
 func CORSMiddleware() ginext.HandlerFunc {
@@ -40,7 +40,7 @@ func AnalyticsMiddleware(repoAnalytics ServiceAnalytics) ginext.HandlerFunc {
 
 		c.Next()
 
-		analytics := db.Analytics{
+		analytics := dto.Analytics{
 			ShortURL:  shortURL,
 			Ip:        ip,
 			UserAgent: userAgent,

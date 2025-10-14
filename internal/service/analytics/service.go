@@ -4,11 +4,12 @@ import (
 	"context"
 
 	"github.com/avraam311/url-shortener/internal/models/db"
+	"github.com/avraam311/url-shortener/internal/models/dto"
 )
 
 type RepositoryAnalytics interface {
 	GetAnalytics(context.Context, string) ([]*db.Analytics, error)
-	SaveAnalytics(context.Context, *db.Analytics) error
+	SaveAnalytics(context.Context, *dto.Analytics) error
 }
 
 type ServiceAnalytics struct {

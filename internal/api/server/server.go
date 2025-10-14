@@ -9,11 +9,11 @@ import (
 	"github.com/avraam311/url-shortener/internal/api/handlers/analytics"
 	"github.com/avraam311/url-shortener/internal/api/handlers/url"
 	"github.com/avraam311/url-shortener/internal/middlewares"
-	"github.com/avraam311/url-shortener/internal/models/db"
+	"github.com/avraam311/url-shortener/internal/models/dto"
 )
 
 type ServiceAnalytics interface {
-	SaveAnalytics(context.Context, *db.Analytics) error
+	SaveAnalytics(context.Context, *dto.Analytics) error
 }
 
 func NewRouter(handlerURL *url.HandlerURL, handlerAnalytics *analytics.HandlerAnalytics, serviceAnalytics ServiceAnalytics, ginMode string) *ginext.Engine {
