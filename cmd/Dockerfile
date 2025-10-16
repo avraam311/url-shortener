@@ -6,7 +6,7 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o app ./cmd/app/main.go
+RUN go build -o app ./cmd/main.go
 
 FROM alpine AS runner
 
@@ -14,4 +14,4 @@ COPY --from=build_base ./app .
 COPY ./config ./config
 COPY ./.env .
 
-CMD ["app"]
+CMD ["./app"]

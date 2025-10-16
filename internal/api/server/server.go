@@ -26,7 +26,7 @@ func NewRouter(handlerURL *url.HandlerURL, handlerAnalytics *analytics.HandlerAn
 	api := e.Group("/api/url-shortener")
 	{
 		api.POST("/shorten", handlerURL.CreateShortURL)
-		api.GET("/", middlewares.AnalyticsMiddleware(serviceAnalytics), handlerURL.GoToShortUrl)
+		api.GET("/:short_url", middlewares.AnalyticsMiddleware(serviceAnalytics), handlerURL.GoToShortUrl)
 		api.GET("/analytics/:short_url", handlerAnalytics.GetAnalytics)
 	}
 

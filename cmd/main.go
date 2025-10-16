@@ -68,6 +68,7 @@ func main() {
 			zlog.Logger.Fatal().Err(err).Msg("failed to run server")
 		}
 	}()
+	zlog.Logger.Info().Msg("server is running")
 
 	<-ctx.Done()
 	zlog.Logger.Info().Msg("shutdown signal received")
