@@ -18,6 +18,8 @@ import (
 
 	"github.com/wb-go/wbf/config"
 	"github.com/wb-go/wbf/dbpg"
+	"github.com/wb-go/wbf/redis"
+	"github.com/wb-go/wbf/retry"
 	"github.com/wb-go/wbf/zlog"
 
 	"github.com/go-playground/validator/v10"
@@ -54,9 +56,19 @@ func main() {
 		zlog.Logger.Fatal().Err(err).Msg("failed to connect to database")
 	}
 
+	redis := redis.New(cfg.GetString("REDIS_ADDRESS"), cfg.GetString("REDIS_PASSWORD"), cfg.GetInt("REDIS_DATABASE"))
+	if err = redis.Ping(ctx).Err(); err != nil {
+		zlog.Logger.Fatal().Err(err).Msg("failed to connect to redis")
+	}
+
+	retryStrategy := retry.Strategy{
+		Attempts: cfg.GetInt("retry.attempts"),
+		Delay:    cfg.GetDuration("retry.delay"),
+		Backoff:  cfg.GetFloat64("retry.backoff"),
+	}
 	repoURL := repositoryURL.NewRepository(db)
 	repoAnalytics := repositoryAnalytics.NewRepository(db)
-	srvcURL := serviceURL.NewService(repoURL)
+	srvcURL := serviceURL.NewService(repoURL, redis, retryStrategy)
 	srvcAnalytics := serviceAnalytics.NewService(repoAnalytics)
 	handURL := handlersURL.NewHandler(srvcURL, val)
 	handAnalytics := handlersAnalytics.NewHandler(srvcAnalytics, val)

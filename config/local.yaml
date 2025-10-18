@@ -8,3 +8,8 @@ db:
 
 server:
   port: ":8080"
+
+retry:
+  attempts: 3
+  delay: 50ms
+  backoff: 2.0

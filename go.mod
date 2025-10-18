@@ -4,13 +4,16 @@ go 1.24.6
 
 require (
 	github.com/go-playground/validator/v10 v10.26.0
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/wb-go/wbf v0.0.7
 )
 
 require (
 	github.com/bytedance/sonic v1.13.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.4 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cloudwego/base64x v0.1.5 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect

@@ -24,7 +24,7 @@ func (h *HandlerURL) GoToShortUrl(c *ginext.Context) {
 	fullURL, err := h.service.GetFullURL(c.Request.Context(), shortURL)
 	if err != nil {
 		if errors.Is(err, url.ErrFullURLNotFound) {
-			zlog.Logger.Error().Err(err).Msg("full url not found")
+			zlog.Logger.Error().Err(err).Str("short_url", shortURL).Msg("full url not found")
 			handlers.Fail(c.Writer, http.StatusNotFound, url.ErrFullURLNotFound)
 			return
 		}
