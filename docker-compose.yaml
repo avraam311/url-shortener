@@ -11,8 +11,22 @@ services:
         condition: service_healthy
       migrator:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     networks:
       - app-network
+
+  frontend:
+    image: nginx:alpine
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
+    volumes:
+      - ./frontend/index.html:/usr/share/nginx/html/index.html:ro
+    networks:
+    - app-network
 
   db:
     image: postgres
@@ -64,6 +78,11 @@ services:
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}" ]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - app-network
 
