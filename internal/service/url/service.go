@@ -8,6 +8,7 @@ import (
 	"github.com/wb-go/wbf/retry"
 )
 
+//go:generate mockgen -source=service.go -destination=../../mocks/url/service.go
 type RepositoryURL interface {
 	SaveShortURL(context.Context, *domain.URL) (string, error)
 	GetFullURL(context.Context, string) (string, error)

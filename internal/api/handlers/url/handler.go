@@ -8,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+//go:generate mockgen -source=handler.go -destination=../../../mocks/url/handler.go
 type ServiceURL interface {
 	CreateShortURL(context.Context, *dto.FullURL) (string, error)
 	GetFullURL(context.Context, string) (string, error)

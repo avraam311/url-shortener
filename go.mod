@@ -5,6 +5,7 @@ go 1.24.6
 require (
 	github.com/go-playground/validator/v10 v10.26.0
 	github.com/go-redis/redis/v8 v8.11.5
+	github.com/golang/mock v1.6.0
 	github.com/wb-go/wbf v0.0.7
 )
 

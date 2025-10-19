@@ -8,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+//go:generate mockgen -source=handler.go -destination=../../../mocks/analytics/handler.go
 type ServiceAnalytics interface {
 	GetAnalytics(context.Context, string) ([]*db.Analytics, error)
 }
